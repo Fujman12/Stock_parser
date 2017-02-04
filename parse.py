@@ -32,14 +32,24 @@ with open('Sample 2.csv', 'rb') as f:
         url = url.replace('-Aktie', '/STU/')
         url = url + date_url
         print "Going to %s" % url
-        driver.get(url)
+
+        try:
+            driver.get(url)
+        except TimeoutException:
+            print "TIME!"
+            driver.execute_script("window.stop();")
+
 
         source = driver.page_source
         soup = BeautifulSoup(source)
 
-
-        hist_div = soup.find('div', id = 'historic-price-list')
-        tbody = hist_div.find('div', {'class' : 'content'} ).table.tbody
+        try:
+            hist_div = soup.find('div', id = 'historic-price-list')
+            tbody = hist_div.find('div', {'class' : 'content'} ).table.tbody
+        except Exception as e:
+            print e.message
+            print "No info for %s on %s" % (row[0], url)
+            continue
 
         trs = tbody.findAll('tr')
         #print trs
@@ -52,5 +62,9 @@ with open('Sample 2.csv', 'rb') as f:
                 continue
 
             tds = tr.findAll('td')
-
-            print tds[0].string + " " + tds[1].string + " " +tds[2].string + " " + tds[3].string + " " + tds[4].string
+            if (tds[0].string is not None and
+                tds[1].string is not None and
+                  tds[2].string is not None and
+                    tds[3].string is not None and
+                      tds[4].string is not None):
+                      print tds[0].string + " " + tds[1].string + " " +tds[2].string + " " + tds[3].string + " " + tds[4].string
