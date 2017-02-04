@@ -1,6 +1,7 @@
 appdirs==1.4.0
 BeautifulSoup==3.2.1
 packaging==16.8
+PyMySQL==0.7.9
 pyparsing==2.1.10
 selenium==3.0.2
 six==1.10.0
