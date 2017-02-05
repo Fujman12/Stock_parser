@@ -144,3 +144,5 @@ with open('Sample 2.csv', 'rb') as f:
         cursor.execute(query)
         conn.commit()
         print row[0] + " information succesfully added to %s" % table
+
+driver.close()
